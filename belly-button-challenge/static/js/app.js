@@ -19,7 +19,8 @@ function buildMetadata(sample) {
     // tags for each key-value in the filtered metadata.
     Object.entries(result).forEach(([key, value]) => {
       PANEL.append("h6").text(`${key.toUpperCase()}: ${value}`);
-  });
+    
+  })})};
 
 
 // function to build both charts
@@ -37,6 +38,7 @@ function buildCharts(sample) {
     var otu_ids = result.otu_ids;
     var otu_labels = result.otu_labels;
     var sample_values = result.sample_values;
+})};
 
     // Build a Bubble Chart
     var bubbleData = [{
@@ -84,6 +86,7 @@ function buildCharts(sample) {
 
     // Render the Bar Chart
     Plotly.newPlot("bar", barData, barLayout);
+
   };
 
 
@@ -92,23 +95,31 @@ function init() {
   d3.json("https://static.bc-edx.com/data/dl-1-2/m14/lms/starter/samples.json").then((data) => {
 
     // Get the names field
-
+ let dropdown = d3.select("#selDataset");
 
     // Use d3 to select the dropdown with id of `#selDataset`
-
+    d3.json(url).then((data) => {
 
     // Use the list of sample names to populate the select options
     // Hint: Inside a loop, you will need to use d3 to append a new
     // option for each sample name.
-
+    let sample_ids = data.names;
+    console.log(sample_ids);
+        for (id of sample_ids){
+            dropdown.append("option").attr("value", id).text(id);
+        };
 
     // Get the first sample from the list
-
+    let first_entry = sample_ids[0];
+    console.log(first_entry);
 
     // Build charts and metadata panel with the first sample
-
-  });
+    makeBar(first_entry);
+    makeBubble(first_entry);
+    makeDemographics(first_entry);
+    }); //end of d3 access
 }
+  )};
 
 // Function for event listener
 function optionChanged(newSample) {
